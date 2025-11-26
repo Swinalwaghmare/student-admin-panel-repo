@@ -16,7 +16,7 @@ pipeline {
             steps {
                 gitCheckout(
                     branch: "master",
-                    url: "https://github.com/shivakumar26011999/DataStore.git"
+                    url: "https://github.com//DataStore.git"
                 )
             }
         }
