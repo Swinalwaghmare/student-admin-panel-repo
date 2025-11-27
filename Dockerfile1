@@ -1,7 +1,0 @@
-FROM amazoncorretto:11-alpine-jdk
-MAINTAINER shiva
-WORKDIR /app/source
-COPY . .
-RUN ./mvnw clean package -Dspring.profiles.active=build
-RUN mv ./target/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
