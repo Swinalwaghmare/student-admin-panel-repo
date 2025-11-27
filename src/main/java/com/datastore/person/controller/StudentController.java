@@ -43,4 +43,30 @@ public class StudentController {
         List<Student> stuList = studentRepository.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(stuList);
     }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/student/update/{name}")
+    private ResponseEntity<String> updateStudent(@PathVariable("name") String name, @RequestBody Student updatedStudent) {
+        logger.info("Updating student with name : {}", name);
+        return studentRepository.findByName(name)
+                .map(student -> {
+                    student.setName(updatedStudent.getName());
+                    student.setAge(updatedStudent.getAge());
+                    studentRepository.save(student);
+                    logger.info("Updated student : {}", student.getName());
+                    return ResponseEntity.ok().body("Student successfully updated.");
+                })
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found."));
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, path = "/student/delete/{name}")
+    private ResponseEntity<String> deleteStudent(@PathVariable("name") String name) {
+        logger.info("Deleting student with name : {}", name);
+        return studentRepository.findByName(name)
+                .map(student -> {
+                    studentRepository.delete(student);
+                    logger.info("Deleted student : {}", name);
+                    return ResponseEntity.ok().body("Student successfully deleted.");
+                })
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found."));
+    }
 }
